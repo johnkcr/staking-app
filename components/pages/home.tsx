@@ -73,7 +73,12 @@ const Home = observer(() => {
   const { isLoading, error, data, isFetching } = useQuery("repoData", () =>
     fetch("https://api.coinpaprika.com/v1/coins")
       .then((res) => res.json())
-      .then((data) => setCoinList(data.slice(0, 10)))
+      .then((data) => {
+        
+        const sdtCoin = data.filter(el => el.symbol === 'SDT');
+        console.log("sdt---coin", sdtCoin);
+        setCoinList([sdtCoin[0], ...data.slice(0, 10)]);
+      })
   );
 
   if (isLoading) return <Spinner />;
