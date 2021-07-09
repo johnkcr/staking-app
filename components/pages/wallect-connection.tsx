@@ -16,7 +16,7 @@ import {
 import { UserRejectedRequestError as UserRejectedRequestErrorFrame } from "@web3-react/frame-connector";
 import { Web3Provider } from "@ethersproject/providers";
 import { formatEther } from "@ethersproject/units";
-import {ConnectionButton} from './layout.styled';
+import {ConnectionButton} from '../layout/layout.styled';
 
 import {
   injected,
@@ -33,7 +33,7 @@ import {
   authereum
 } from "../../utils/connectors";
 import { useEagerConnect, useInactiveListener } from "../../utils/chainHooks";
-import { Spinner } from "./wallet-spinner";
+import { Spinner } from "../layout/wallet-spinner";
 
 const connectorsByName = {
   Injected: injected,
@@ -49,6 +49,16 @@ const connectorsByName = {
   Torus: torus,
   Authereum: authereum
 };
+
+import {
+  Section,
+  Background,
+  Content,
+  Card,
+  CardTitle,
+  CardDescription,
+  Form,
+} from "../layout/layout.styled";
 
 function getErrorMessage(error) {
   if (error instanceof NoEthereumProviderError) {
@@ -170,71 +180,79 @@ function WalletModal() {
   }, []);
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <h1 style={{ margin: "0", textAlign: "right" }}>
-        {active ? "🟢" : error ? "🔴" : "🟠"}
-      </h1>
-      <h3
-        style={{
-          display: "grid",
-          gridGap: "1rem",
-          gridTemplateColumns: "1fr min-content 1fr",
-          maxWidth: "30rem",
-          lineHeight: "2rem",
-          margin: "auto"
-        }}
-      >
-        <span>Chain Id</span>
-        <span role="img" aria-label="chain">
-          ⛓
-        </span>
-        <span>{chainId === undefined ? "..." : chainId}</span>
+    <div style={{ padding: "1rem" }} className="-mt-48">
+       <div className="sm:text-center">
+         <Card>
+          <CardTitle>Change NetWork</CardTitle>
+          <CardDescription>
+            <h1 style={{ margin: "0", textAlign: "right" }}>
+              {active ? "🟢" : error ? "🔴" : "🟠"}
+            </h1>
+            <h3
+              style={{
+                display: "grid",
+                gridGap: "1rem",
+                gridTemplateColumns: "1fr min-content 1fr",
+                maxWidth: "30rem",
+                lineHeight: "2rem",
+                margin: "auto"
+              }}
+            >
+              <span>Chain Id</span>
+              <span role="img" aria-label="chain">
+                ⛓
+              </span>
+              <span>{chainId === undefined ? "..." : chainId}</span>
 
-        <span>Block Number</span>
-        <span role="img" aria-label="numbers">
-          🔢
-        </span>
-        <span>
-          {blockNumber === undefined
-            ? "..."
-            : blockNumber === null
-            ? "Error"
-            : blockNumber.toLocaleString()}
-        </span>
+              <span>Block Number</span>
+              <span role="img" aria-label="numbers">
+                🔢
+              </span>
+              <span>
+                {blockNumber === undefined
+                  ? "..."
+                  : blockNumber === null
+                  ? "Error"
+                  : blockNumber.toLocaleString()}
+              </span>
 
-        <span>Account</span>
-        <span role="img" aria-label="robot">
-          🤖
-        </span>
-        <span>
-          {account === undefined
-            ? "..."
-            : account === null
-            ? "None"
-            : `${account.substring(0, 6)}...${account.substring(
-                account.length - 4
-              )}`}
-        </span>
+              <span>Account</span>
+              <span role="img" aria-label="robot">
+                🤖
+              </span>
+              <span>
+                {account === undefined
+                  ? "..."
+                  : account === null
+                  ? "None"
+                  : `${account.substring(0, 6)}...${account.substring(
+                      account.length - 4
+                    )}`}
+              </span>
 
-        <span>Balance</span>
-        <span role="img" aria-label="gold">
-          💰
-        </span>
-        <span>
-          {ethBalance === undefined
-            ? "..."
-            : ethBalance === null
-            ? "Error"
-            : `Ξ${parseFloat(formatEther(ethBalance)).toPrecision(4)}`}
-        </span>
-      </h3>
+              <span>Balance</span>
+              <span role="img" aria-label="gold">
+                💰
+              </span>
+              <span>
+                {ethBalance === undefined
+                  ? "..."
+                  : ethBalance === null
+                  ? "Error"
+                  : `Ξ${parseFloat(formatEther(ethBalance)).toPrecision(4)}`}
+              </span>
+            </h3>
+          </CardDescription>
+          </Card>
+        </div>
+      
       <hr style={{ margin: "2rem" }} />
       <div
         style={{
           display: "grid",
           gridGap: "1rem",
-          gridTemplateColumns: "1fr 1fr",
-          maxWidth: "20rem",
+          gridTemplateColumns: "1fr 1fr 1fr 1fr",
+          maxWidth: "40rem",
           margin: "auto"
         }}
       >

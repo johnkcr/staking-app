@@ -9,6 +9,7 @@ import { useEagerConnect, useInactiveListener } from "utils/chainHooks";
 import { blockchain } from "utils/store";
 import { injected } from "../../utils/connectors";
 import { Button } from './layout.styled';
+import Link from 'next/link';
 
 import AppDialog from './app-dialog';
 import WalletModal from './wallet-modal';
@@ -96,81 +97,26 @@ const Header = observer(() => {
                   </div>
                   <div>
                     <div className="flex items-center ml-4 md:ml-6">
-                      {/* Profile dropdown */}
-                      <Menu as="div" className="relative ml-3">
-                        {({ open }) => (
-                          <>
-                            <div>
-                              <Menu.Button>
-                                <span className="sr-only">Open user menu</span>
-                                <Button>
-                                   {blockchain.address === undefined
-                                      ? "..."
-                                      : blockchain.address === null
-                                      ? "None"
-                                      : `${blockchain.address.substring(
-                                          0,
-                                          6
-                                        )}...${blockchain.address.substring(
-                                          blockchain.address.length - 4
-                                        )}`}
-                                </Button>
-                              </Menu.Button>
-                            </div>
-                            <Transition
-                              show={open}
-                              // @ts-ignore
-                              as={Fragment}
-                              enter="transition ease-out duration-100"
-                              enterFrom="transform opacity-0 scale-95"
-                              enterTo="transform opacity-100 scale-100"
-                              leave="transition ease-in duration-75"
-                              leaveFrom="transform opacity-100 scale-100"
-                              leaveTo="transform opacity-0 scale-95"
-                            >
-                              <Menu.Items
-                                static
-                                className="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                              >
-                                <Menu.Item>
-                                  <a
-                                    href="#"
-                                    onClick={handleChangeWallet}
-                                    className={classNames(
-                                      "block px-4 py-2 text-sm text-gray-700"
-                                    )}
-                                  >
-                                    Change Wallet
-                                  </a>
-                                </Menu.Item>
-                                <Menu.Item>
-                                  <a
-                                    href="#"
-                                    className={classNames(
-                                      "block px-4 py-2 text-sm text-gray-700"
-                                    )}
-                                  >
-                                    Balance: {blockchain.balance}
-                                  </a>
-                                </Menu.Item>
-                                {blockchain.address && (<Menu.Item>
-                                  <a
-                                    href={`https://etherscan.io/address/${blockchain.address}`}
-                                    target="_blank"
-                                    className={classNames(
-                                      "block px-4 py-2 text-sm text-gray-700 flex"
-                                    )}
-                                  >
-                                       Etherscan
-                                  </a>
-                                </Menu.Item>
-                                )}
-                               
-                              </Menu.Items>
-                            </Transition>
-                          </>
-                        )}
-                      </Menu>
+                    <Link href="/">
+                      <Button>
+                        Token Swap
+                      </Button>
+                     </Link>
+                    <Link href="/settings">
+                      <Button className="ml-2">
+                        {blockchain.address === undefined
+                          ? "..."
+                          : blockchain.address === null
+                          ? "None"
+                          : `${blockchain.address.substring(
+                              0,
+                              6
+                            )}...${blockchain.address.substring(
+                              blockchain.address.length - 4
+                            )}`}
+                        </Button>
+                     </Link>
+                     
                     </div>
                   </div>
                 </div>

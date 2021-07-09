@@ -1,5 +1,6 @@
 import Layout from "components/layout";
+import Home from "components/pages/home";
 
-export default function Home() {
-  return <Layout />;
+export default function IndexPage() {
+  return <Home />
 }
