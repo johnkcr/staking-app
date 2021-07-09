@@ -7,6 +7,7 @@ import { Fragment, useEffect, useState } from "react";
 import { useEagerConnect, useInactiveListener } from "utils/chainHooks";
 import { blockchain } from "utils/store";
 import { injected } from "../../utils/connectors";
+import { Button } from './layout.styled';
 
 const connectorsByName = {
   Injected: injected,
@@ -46,7 +47,7 @@ const Header = observer(() => {
         library.getBalance(blockchain.address).then((balance) => {
           console.log(balance);
           blockchain.setBalance(
-            `Ξ ${parseFloat(formatEther(balance)).toPrecision(4)}`
+            `${parseFloat(formatEther(balance)).toPrecision(4)} ETH` 
           );
           console.log(blockchain.balance);
         })
@@ -75,19 +76,29 @@ const Header = observer(() => {
                       />
                     </div>
                   </div>
-                  <div className="hidden md:block">
+                  <div>
                     <div className="flex items-center ml-4 md:ml-6">
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
                         {({ open }) => (
                           <>
                             <div>
-                              <Menu.Button className="flex items-center max-w-xs text-sm bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                              <Menu.Button>
                                 <span className="sr-only">Open user menu</span>
-                                <div
+                                <Button
                                   onClick={() => handleActivation()}
-                                  className="w-8 h-8 bg-gray-300 rounded-full"
-                                />
+                                >
+                                   {blockchain.address === undefined
+                                      ? "..."
+                                      : blockchain.address === null
+                                      ? "None"
+                                      : `${blockchain.address.substring(
+                                          0,
+                                          6
+                                        )}...${blockchain.address.substring(
+                                          blockchain.address.length - 4
+                                        )}`}
+                                </Button>
                               </Menu.Button>
                             </div>
                             <Transition
@@ -112,17 +123,7 @@ const Header = observer(() => {
                                       "block px-4 py-2 text-sm text-gray-700"
                                     )}
                                   >
-                                    Address:{" "}
-                                    {blockchain.address === undefined
-                                      ? "..."
-                                      : blockchain.address === null
-                                      ? "None"
-                                      : `${blockchain.address.substring(
-                                          0,
-                                          6
-                                        )}...${blockchain.address.substring(
-                                          blockchain.address.length - 4
-                                        )}`}
+                                    Connected with MetaMask
                                   </a>
                                 </Menu.Item>
                                 <Menu.Item>
@@ -135,6 +136,20 @@ const Header = observer(() => {
                                     Balance: {blockchain.balance}
                                   </a>
                                 </Menu.Item>
+                                {blockchain.address && (<Menu.Item>
+                                  <a
+                                    href={`https://etherscan.io/address/${blockchain.address}`}
+                                    target="_blank"
+                                    className={classNames(
+                                      "block px-4 py-2 text-sm text-gray-700 flex"
+                                    )}
+                                  >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                    Etherscan
+                                  </a>
+                                </Menu.Item>
+                                )}
+                               
                               </Menu.Items>
                             </Transition>
                           </>
@@ -142,67 +157,9 @@ const Header = observer(() => {
                       </Menu>
                     </div>
                   </div>
-                  <div className="flex -mr-2 md:hidden">
-                    {/* Mobile menu button */}
-                    <Disclosure.Button
-                      onClick={() => handleActivation()}
-                      className="inline-flex items-center justify-center p-2 text-gray-400 bg-gray-800 rounded-md hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                    >
-                      <span className="sr-only">Open main menu</span>
-                      {open ? (
-                        <XIcon className="block w-6 h-6" aria-hidden="true" />
-                      ) : (
-                        <MenuIcon
-                          className="block w-6 h-6"
-                          aria-hidden="true"
-                        />
-                      )}
-                    </Disclosure.Button>
-                  </div>
                 </div>
               </div>
             </div>
-
-            <Disclosure.Panel className="border-b border-gray-700 md:hidden">
-              <div className="pt-4 pb-3 border-t border-gray-700">
-                <div className="flex items-center px-5">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-gray-300 rounded-full" />
-                  </div>
-                  <div className="ml-3">
-                    <div className="text-base font-medium leading-none text-white">
-                      User
-                    </div>
-                    <div className="text-sm font-medium leading-none text-gray-400">
-                      Wallet address
-                    </div>
-                  </div>
-                </div>
-                <div className="px-2 mt-3 space-y-1">
-                  <a
-                    href="#"
-                    className="block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:text-white hover:bg-gray-700"
-                  >
-                    {blockchain.address === undefined
-                      ? "..."
-                      : blockchain.address === null
-                      ? "None"
-                      : `${blockchain.address.substring(
-                          0,
-                          6
-                        )}...${blockchain.address.substring(
-                          blockchain.address.length - 4
-                        )}`}
-                  </a>
-                  <a
-                    href="#"
-                    className="block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:text-white hover:bg-gray-700"
-                  >
-                    {blockchain.balance}
-                  </a>
-                </div>
-              </div>
-            </Disclosure.Panel>
           </>
         )}
       </Disclosure>
