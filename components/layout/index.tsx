@@ -96,12 +96,9 @@ const Layout = observer(() => {
                 <Card>
                   <div className="relative">
                     <div className="sm:text-center">
-                      <CardTitle>Token swap</CardTitle>
+                      <CardTitle>Token Swap</CardTitle>
                       <CardDescription>
-                        Sagittis scelerisque nulla cursus in enim consectetur
-                        <br />
-                        quam. Dictum urna sed consectetur neque tristique
-                        pellentesque.
+                        Current Trading Info
                       </CardDescription>
                     </div>
 

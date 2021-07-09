@@ -1,3 +1,4 @@
+import React from 'react';
 import { formatEther } from "@ethersproject/units";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
@@ -9,6 +10,9 @@ import { blockchain } from "utils/store";
 import { injected } from "../../utils/connectors";
 import { Button } from './layout.styled';
 
+import AppDialog from './app-dialog';
+import WalletModal from './wallet-modal';
+
 const connectorsByName = {
   Injected: injected,
 };
@@ -18,6 +22,9 @@ function classNames(...classes) {
 }
 
 const Header = observer(() => {
+
+  const [openWalletModal, setWalletModal] = React.useState(false);
+
   const context = useWeb3React();
   const { connector, library, chainId, account, activate, deactivate, active } =
     context;
@@ -56,9 +63,20 @@ const Header = observer(() => {
 
   const handleActivation = () => {
     console.log("Handeling Metamask");
-    setActivatingConnector(injected);
-    activate(injected);
+    //setActivatingConnector(injected);
+    //activate(injected);
   };
+
+
+  const handleChangeWallet = () => {
+    setWalletModal(true);
+  }
+
+  const handleCloseWalletModal = () => {
+    setWalletModal(false);
+  }
+
+
   return (
     <div className="pb-32 bg-gray-800">
       <Disclosure as="nav" className="bg-gray-800">
@@ -85,9 +103,7 @@ const Header = observer(() => {
                             <div>
                               <Menu.Button>
                                 <span className="sr-only">Open user menu</span>
-                                <Button
-                                  onClick={() => handleActivation()}
-                                >
+                                <Button>
                                    {blockchain.address === undefined
                                       ? "..."
                                       : blockchain.address === null
@@ -119,11 +135,12 @@ const Header = observer(() => {
                                 <Menu.Item>
                                   <a
                                     href="#"
+                                    onClick={handleChangeWallet}
                                     className={classNames(
                                       "block px-4 py-2 text-sm text-gray-700"
                                     )}
                                   >
-                                    Connected with MetaMask
+                                    Change Wallet
                                   </a>
                                 </Menu.Item>
                                 <Menu.Item>
@@ -144,8 +161,7 @@ const Header = observer(() => {
                                       "block px-4 py-2 text-sm text-gray-700 flex"
                                     )}
                                   >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                                    Etherscan
+                                       Etherscan
                                   </a>
                                 </Menu.Item>
                                 )}
@@ -166,6 +182,12 @@ const Header = observer(() => {
       <header className="py-10">
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8"></div>
       </header>
+      <AppDialog
+        handleClose={handleCloseWalletModal}
+        open={openWalletModal}
+      >
+        <WalletModal/>
+      </AppDialog>
     </div>
   );
 });
