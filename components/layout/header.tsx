@@ -45,8 +45,8 @@ const Header = observer(() => {
   useInactiveListener(!triedEager || !!activatingConnector);
 
   useEffect(() => {
-    console.log("running");
-    console.log("account", account);
+    // console.log("running");
+    // console.log("account", account);
     if (account) blockchain.setAddress(account);
 
     if (library)
@@ -78,6 +78,15 @@ const Header = observer(() => {
   }
 
 
+  const formatAddress = (addr) => {
+    return addr? `${addr.substring(
+      0,
+      6
+    )}...${addr.substring(
+      addr.length - 4
+    )}`: `Connect to network`;
+  }
+
   return (
     <div className="pb-32 bg-gray-800">
       <Disclosure as="nav" className="bg-gray-800">
@@ -104,17 +113,8 @@ const Header = observer(() => {
                      </Link>
                     <Link href="/settings">
                       <Button className="ml-2">
-                        {blockchain.address === undefined
-                          ? "..."
-                          : blockchain.address === null
-                          ? "None"
-                          : `${blockchain.address.substring(
-                              0,
-                              6
-                            )}...${blockchain.address.substring(
-                              blockchain.address.length - 4
-                            )}`}
-                        </Button>
+                        {formatAddress(account)}
+                      </Button>
                      </Link>
                      
                     </div>

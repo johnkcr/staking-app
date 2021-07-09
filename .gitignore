@@ -27,3 +27,4 @@ firebase.json
 .firebase/hosting.YnVpbGQ.cache
 public/index.html
 .env
+ngrok.exe
