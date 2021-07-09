@@ -111,6 +111,11 @@ const Header = observer(() => {
                         Token Swap
                       </Button>
                      </Link>
+                     <Link href="/solana">
+                      <Button className="ml-2">
+                        Solana
+                      </Button>
+                     </Link>
                     <Link href="/settings">
                       <Button className="ml-2">
                         {formatAddress(account)}
